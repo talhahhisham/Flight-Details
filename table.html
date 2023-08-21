@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Data Table</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+    table {
+      width: 90%;
+      border-collapse: collapse;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+</head>
+<body>
+  <h1>Flight Data Table</h1>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Itinerary</th>
+        <th>Flight Number</th>
+        <th>Flight Timing</th>
+        <th>Airline</th>
+        <th>PNR</th>
+        <th>Dateline</th>
+        <th>Number of Seats</th>
+        <th>MR</th>
+        <th>Price Per Seat</th>
+      </tr>
+    </thead>
+    <tbody id="flightTableBody">
+      <!-- Table rows will be added here -->
+    </tbody>
+  </table>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCaoBfovJFYU66gfOiPTs0OCilLAkm6u-U",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+      authDomain: "ibctours-d48ba.firebaseapp.com",
+      databaseURL: "https://ibctours-d48ba-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ibctours-d48ba",
+      storageBucket: "ibctours-d48ba.appspot.com",
+      messagingSenderId: "431234246882",
+      appId: "1:431234246882:web:ad6464e84e1d852301d6bb"
+        };
+    
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.database();
+
+    const flightsRef = db.ref("flights");
+
+    function displayFlightData(snapshot) {
+      const flightData = snapshot.val();
+      const flightTableBody = document.getElementById("flightTableBody");
+
+      for (const flightNum in flightData) {
+        const flight = flightData[flightNum];
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
+          <td>${flight.date}</td>
+          <td>${flight.itinerary}</td>
+          <td>${flight.flightNum}</td>
+          <td>${flight.flightTiming}</td>
+          <td>${flight.airline}</td>
+          <td>${flight.pnr}</td>
+          <td>${flight.dateline}</td>
+          <td>${flight.numOfSeats}</td>
+          <td>${flight.mr}</td>
+          <td>${flight.pricePerSeat}</td>
+        `;
+        flightTableBody.appendChild(newRow);
+      }
+    }
+
+    flightsRef.on("value", displayFlightData);
+  </script>
+</body>
+</html>

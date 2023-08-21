@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flight Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="date"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    input[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Enter Flight Information</h1>
+  <form id="flightForm">
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date"><br><br>
+    
+    <label for="itinerary">Flight Itinerary:</label>
+    <input type="text" id="itinerary" name="itinerary"><br><br>
+    
+    <label for="flightNum">Flight Number:</label>
+    <input type="text" id="flightNum" name="flightNum"><br><br>
+    
+    <label for="flightTiming">Flight Timing:</label>
+    <input type="text" id="flightTiming" name="flightTiming"><br><br>
+    
+    <label for="airline">Airline:</label>
+    <input type="text" id="airline" name="airline"><br><br>
+    
+    <label for="pnr">PNR Number:</label>
+    <input type="text" id="pnr" name="pnr"><br><br>
+    
+    <label for="dateline">Dateline:</label>
+    <input type="text" id="dateline" name="dateline"><br><br>
+    
+    <label for="numOfSeats">Number of Seats:</label>
+    <input type="number" id="numOfSeats" name="numOfSeats"><br><br>
+    
+    <label for="mr">MR:</label>
+    <input type="text" id="mr" name="mr"><br><br>
+    
+    <label for="pricePerSeat">Price per Seat:</label>
+    <input type="number" id="pricePerSeat" name="pricePerSeat"><br><br>
+    
+    <input type="submit" value="Submit">
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCaoBfovJFYU66gfOiPTs0OCilLAkm6u-U",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+      authDomain: "ibctours-d48ba.firebaseapp.com",
+      databaseURL: "https://ibctours-d48ba-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ibctours-d48ba",
+      storageBucket: "ibctours-d48ba.appspot.com",
+      messagingSenderId: "431234246882",
+      appId: "1:431234246882:web:ad6464e84e1d852301d6bb"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // get ref to database services
+    const db = getDatabase(app);
+
+    const flightForm = document.getElementById("flightForm");
+
+    flightForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(flightForm);
+
+    const flightNum = formData.get("flightNum"); // Get the flight number
+
+    const flightData = {
+    date: formData.get("date"),
+    itinerary: formData.get("itinerary"),
+    flightNum: formData.get("flightNum"),
+    flightTiming: formData.get("flightTiming"),
+    airline: formData.get("airline"),
+    pnr: formData.get("pnr"),
+    dateline: formData.get("dateline"),
+    numOfSeats: formData.get("numOfSeats"),
+    mr: formData.get("mr"),
+    pricePerSeat: formData.get("pricePerSeat")
+    };
+
+    const flightRef = ref(db, `flights/${flightNum}`);
+
+    set(flightRef, flightData)
+    .then(() => {
+        console.log("Data successfully saved to the database");
+    })
+    .catch((error) => {
+        console.error("Error saving data: ", error);
+    });
+        });
+  </script>
+</body>
+</html>
